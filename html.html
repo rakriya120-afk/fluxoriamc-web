@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minecraft Server</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #1e1e2f;
+      color: white;
+      text-align: center;
+    }
+    header {
+      background: url('https://images-ext-1.discordapp.net/external/mYS9F7wWC2UYyGlml0e9aaDvQbV-e9llB6MJdmfXIFM/%3Fsize%3D2048/https/cdn.discordapp.com/icons/1378649614424477786/414cff29ac8c7b051f2858a7ae165c49.webp') no-repeat center/cover;
+      height: 60vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    header h1 {
+      font-size: 3rem;
+      background: rgba(0,0,0,0.5);
+      padding: 15px;
+      border-radius: 10px;
+    }
+    .ip-box {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background: #333;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-block;
+    }
+    .ip-box:hover { background: #444; }
+    section {
+      padding: 40px 20px;
+    }
+    .buttons a {
+      text-decoration: none;
+      color: white;
+      background: #00bcd4;
+      padding: 12px 20px;
+      margin: 10px;
+      border-radius: 8px;
+      display: inline-block;
+    }
+    .buttons a:hover { background: #0097a7; }
+    footer {
+      background: #111;
+      padding: 15px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🔝 Header -->
+  <header>
+    <h1>🌍 FluxoriaMC</h1>
+    <div class="ip-box" onclick="copyIP()">IP: play.fluxoriamc.xyz</div>
+    <p id="status">Checking server status...</p>
+  </header>
+
+  <!-- 📜 About -->
+  <section>
+    <h2>About Our Server</h2>
+    <p>Welcome to FluxoriaMC — a fun Survival & Lifesteal Minecraft server!  
+    Build, explore, and fight with friends in an epic world.</p>
+  </section>
+
+  <!-- 👥 Status -->
+  <section>
+    <h2>Server Info</h2>
+    <p id="motd">MOTD: ...</p>
+    <p id="players">Players Online: ...</p>
+  </section>
+
+  <!-- 🔗 Links -->
+  <section class="buttons">
+    <a href="https://discord.gg/c5S3PtRb" target="_blank">💬 Join Discord</a>
+    <a href="https://store.fluxoriamc.xyz" target="_blank">🛒 Store</a>
+  </section>
+
+  <!-- 👣 Footer -->
+  <footer>
+    © 2025 FluxoriaMC. No rights reserved.
+  </footer>
+
+  <script>
+    // 📌 Copy IP Function
+    function copyIP() {
+      navigator.clipboard.writeText("play.fluxoriamc.xyz");
+      alert("Server IP copied: play.fluxoriamc.xyz");
+    }
+
+    // 🌍 Fetch Minecraft Server Status
+    async function getStatus() {
+      try {
+        let res = await fetch("https://api.mcsrvstat.us/2/play.fluxoriamc.xyz");
+        let data = await res.json();
+
+        if (data.online) {
+          document.getElementById("status").innerHTML = "✅ Server is Online";
+          document.getElementById("motd").innerHTML = "MOTD: " + data.motd.clean.join(" ");
+          document.getElementById("players").innerHTML = "Players Online: " + data.players.online + "/" + data.players.max;
+        } else {
+          document.getElementById("status").innerHTML = "❌ Server is Offline";
+        }
+      } catch (e) {
+        document.getElementById("status").innerHTML = "⚠️ Could not fetch status";
+      }
+    }
+
+    getStatus();
+  </script>
+
+</body>
+</html>
